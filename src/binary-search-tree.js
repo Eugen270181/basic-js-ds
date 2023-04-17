@@ -37,9 +37,23 @@ class BinarySearchTree {
     }
   }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
+  has( data ) {
+    //throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
+    return searchWithin(this.r, data);
+    function searchWithin(node, data) {
+      if (!node) {
+        return false;
+      }
+      if (node.data === data) {
+        return true;
+      }
+      if (data < node.data) {
+        return searchWithin(node.left, data);
+      } else {
+        return searchWithin(node.right, data);
+      }
+    }
   }
 
   find(/* data */) {
@@ -47,9 +61,39 @@ class BinarySearchTree {
     // remove line with error and write your code here
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
+  remove( data ) {
+    //throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
+    this.r = removeNode(this.r, data);
+    function removeNode(node, data) {
+      if (!node) {
+        return null;
+      }    
+      if (data < node.data) {
+        node.left=removeNode(node.left, data);
+      } else if (data < node.data) {
+        node.right=removeNode(node.right, data);
+      } else {
+        /*data===node.data - deleting case*/
+        if (!node.left && !node.right) return null;
+        if (!node.left) {
+          node = node.right;
+          return node;
+        }
+        if (!node.right) {
+          node = node.left;
+          return node;
+        }
+        /*both child exist for this item*/
+        let minFromRight = node.right;
+        while (minFromRight.left) {
+          minFromRight = minFromRight.left;
+        }
+        node.data = minFromRight.data;
+        node.right = removeNode(node.right, minFromRight.data);
+        return node;
+      }   
+    }
   }
 
   min() {
@@ -62,6 +106,8 @@ class BinarySearchTree {
     // remove line with error and write your code here
   }
 }
+
+const tree = new BinarySearchTree;
 
 module.exports = {
   BinarySearchTree
